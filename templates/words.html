@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static 'css/boote_dada.css' %}" rel="stylesheet">
+</head>
+<body>
+<table class="table table-info table-striped">
+    <thead>
+    <tr>
+        <th class="text-center" scope="col">ردیف</th>
+        <th class="text-center" scope="col">نام کلمه</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for word in words %}
+        <tr>
+            <th class="text-center" scope="row">{{ forloop.counter }}</th>
+            <td class="text-center">
+                <a href="#" onclick="(() => showMeaning({{ word.id }}))()">
+                    {{ word.title }}
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="meaningModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">معنی</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modal_body"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/boote_dada.js' %}"></script>
+<script>
+    const myModal = new bootstrap.Modal('#meaningModal', {
+        keyboard: false
+    })
+
+    function showMeaning(id) {
+        myModal.show()
+        let modal_body = document.getElementById('modal_body')
+        modal_body.innerHTML = ''
+        {% for word in words %}
+            if (id === {{ word.id }}) {
+                {% for m in word.meaning.all %}
+                    modal_body.innerHTML += `{{ m }}` + '</br>'
+                {% endfor %}
+            }
+        {% endfor %}
+    }
+</script>
+</body>
+</html>

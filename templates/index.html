@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static 'css/boote_dada.css' %}" rel="stylesheet">
+</head>
+<body style="background-color: #ebeff1;">
+
+<p>صفحه اصلی</p>
+<h1 class="text-center">زبان ها</h1>
+
+<table class="table table-info table-striped">
+    <thead>
+    <tr>
+        <th class="text-center" scope="col">ردیف</th>
+        <th class="text-center" scope="col">نام زبان</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for language in languages %}
+        <tr>
+            <th class="text-center" scope="row">{{ language.id }}</th>
+            <td class="text-center">
+                <a href="{% url 'words_by_language' language.id %}">{{ language.title }}</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+<form action="{% url 'meaning' %}" method="post">
+    {% csrf_token %}
+    <div class="d-flex gap-2 justify-content-center align-items-center col-12">
+        <label for="word" class="text-center">لغت</label>
+        <input class="col-3" type="text" name="word" id="word" placeholder="کلمه برای جستجو را وارد کنید">
+        <button class="d-block">معنی کن</button>
+    </div>
+</form>
+<br>
+<hr>
+{{ original_word }}
+<br>
+{% for m in word.meaning.all %}
+    معنی به  {{ m.language }} : {{ m.meaning }}
+    <br>
+{% endfor %}
+
+<hr>
+<hr>
+<hr>
+
+<form action="{% url 'reverse_meaning' %}" method="post">
+    {% csrf_token %}
+    <div class="row justify-content-center align-items-center">
+        <label for="meaning" class="2">معنی</label>
+        <input class="form-control  col-3" type="text" name="meaning" id="word" placeholder="کلمه برای جستجو را وارد کنید">
+        <button class="d-block col-3">لغت رو پیدا کن</button>
+    </div>
+</form>
+<br>
+<hr>
+
+{% for w in word2 %}
+	{{ w.title }}
+{% endfor %}
+
+
+<script src="{% static 'js/boote_dada.js' %}"></script>
+</body>
+</html>
