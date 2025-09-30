@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.idea/
+node_modules/
+dictionary/settings.py
